@@ -26,9 +26,64 @@ function operate(num1,num2,op){
     }
 }
 
-let num1 = parseInt(prompt("enter the first operand"));
-let op = prompt("enter the operation");
-let num2 = parseInt(prompt("enter the second operand"));
+let num1= "";
+let op= "";
+let num2= "";
 
-alert(operate(num1,num2,op));
+
+function populateDisplay(digit){
+    displayContent.textContent+=digit;
+}
+
+function storeValues(value){
+    if(!op){
+        num1+=value;
+    }
+    else{
+        num2+=value;
+    }
+}
+
+const displayContent = document.querySelector(".display");
+const buttons = document.querySelector(".buttonContainer");
+
+buttons.addEventListener("click",(e)=>{
+    let target = e.target;
+
+    switch(target.id){
+        case "clear":
+        displayContent.textContent = "";
+        num1 = "";
+        num2 = "";
+        op = "";
+        break;
+
+        case "add":
+        case "subtract":
+        case "division":
+        case "multiply":
+        populateDisplay(target.textContent);
+        op = target.textContent;
+        break;
+
+        case "one":
+        case "two":
+        case "three":
+        case "four":
+        case "five":
+        case "six":
+        case "seven":
+        case "eight":
+        case "nine":
+        populateDisplay(target.textContent);
+        storeValues(target.textContent);
+        break;
+
+        case "equals": 
+        let result = operate(Number(num1),Number(num2),op);
+        displayContent.textContent = result;
+        break;
+        
+    }
+})
 
