@@ -16,6 +16,7 @@ function divide(num1,num2){
     return num1/num2;
 }
 
+
 function operate(num1,num2,op){
     switch(op){
         case "+": return add(num1,num2);
@@ -43,7 +44,6 @@ function storeValues(value){
         num2+=value;
     }
 }
-
 const displayContent = document.querySelector(".display");
 const buttons = document.querySelector(".buttonContainer");
 
@@ -58,14 +58,43 @@ buttons.addEventListener("click",(e)=>{
         op = "";
         break;
 
+        case "delete":
+        displayContent.textContent = displayContent.textContent.slice(0,-1);
+        
+        if(op){
+            num2 = num2.slice(0,-1);
+        }
+        else if(!op){
+            num1 = num1.slice(0,-1);
+        }
+        
+        // Now check: is the operator still in the display?
+        if(op && !displayContent.textContent.includes(op)){
+            op = "";  // Operator was deleted from display, so clear it
+        }
+        break;
+
         case "add":
         case "subtract":
         case "division":
-        case "multiply":
-        populateDisplay(target.textContent);
-        op = target.textContent;
+        case "multiply":   
+        if(!op){
+            populateDisplay(target.textContent);
+            op = target.textContent;
+        }
+        else if(op != "" && num2 != ""){
+            console.log(`${num1} ${op} ${num2}`);
+            var result = operate(Number(num1),Number(num2),op);
+            displayContent.textContent = result;
+            num1 = result;
+            num2 = "";
+            populateDisplay(target.textContent);
+            op = target.textContent;
+            
+        }
         break;
 
+        case "zero":
         case "one":
         case "two":
         case "three":
@@ -75,15 +104,15 @@ buttons.addEventListener("click",(e)=>{
         case "seven":
         case "eight":
         case "nine":
+        case "dot":
         populateDisplay(target.textContent);
         storeValues(target.textContent);
         break;
 
         case "equals": 
-        let result = operate(Number(num1),Number(num2),op);
+        var result = operate(Number(num1),Number(num2),op);
         displayContent.textContent = result;
         break;
-        
     }
 })
 
