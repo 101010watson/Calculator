@@ -196,8 +196,8 @@ document.addEventListener("keydown",(e)=>{
 
         case ".":
         if(!displayContent.textContent.includes(".")){
-            populateDisplay(target.textContent);
-            storeValues(target.textContent);
+            populateDisplay(e.key);
+            storeValues(e.key);
         }
         break;
         
