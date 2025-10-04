@@ -11,8 +11,6 @@ function multiply(num1,num2){
 }
 
 function divide(num1,num2){
-    if(num1 == 0) return 0;
-    if(num2 == 0) return NaN;
     return num1/num2;
 }
 
@@ -44,6 +42,7 @@ function storeValues(value){
         num2+=value;
     }
 }
+
 const displayContent = document.querySelector(".display");
 const buttons = document.querySelector(".buttonContainer");
 
@@ -83,15 +82,25 @@ buttons.addEventListener("click",(e)=>{
             op = target.textContent;
         }
         else if(op != "" && num2 != ""){
-            console.log(`${num1} ${op} ${num2}`);
             var result = operate(Number(num1),Number(num2),op);
             displayContent.textContent = result;
             num1 = result;
             num2 = "";
             populateDisplay(target.textContent);
             op = target.textContent;
-            
         }
+        break;
+        case "percentage":
+            if(displayContent.textContent){
+                if(num1 && op &&num2){
+                    populateDisplay(target.textContent);
+                    num2 = (num2/100).toFixed(2);
+                }
+                else if(num1 && op == "" && num2 == ""){
+                    populateDisplay(target.textContent);
+                    num1 = (num1/100).toFixed(2);
+                }
+            }
         break;
 
         case "zero":
@@ -104,15 +113,107 @@ buttons.addEventListener("click",(e)=>{
         case "seven":
         case "eight":
         case "nine":
-        case "dot":
         populateDisplay(target.textContent);
         storeValues(target.textContent);
         break;
 
+        case "dot":
+        if(!displayContent.textContent.includes(".")){
+            populateDisplay(target.textContent);
+            storeValues(target.textContent);
+        }
+        break;
+
         case "equals": 
         var result = operate(Number(num1),Number(num2),op);
-        displayContent.textContent = result;
+        // to check if a number is decimal or not
+        // divide it by 1 if it's remainder is not 0 then it is decimal
+        if(result%1 != 0){
+            displayContent.textContent = result.toFixed(2);
+        }
+        else{
+            displayContent.textContent = result;
+        }
+        num1 = result;
+        op = "";
+        num2 = "";
         break;
     }
-})
+});
 
+document.addEventListener("keydown",(e)=>{
+    e.preventDefault();
+    switch(e.key){
+
+        case "Backspace":
+        displayContent.textContent = displayContent.textContent.slice(0,-1);
+        
+        if(op){
+            num2 = num2.slice(0,-1);
+        }
+        else if(!op){
+            num1 = num1.slice(0,-1);
+        }
+        
+        // Now check: is the operator still in the display?
+        if(op && !displayContent.textContent.includes(op)){
+            op = "";  // Operator was deleted from display, so clear it
+        }
+        break;
+
+        case "+":
+        case "-":
+        case "/":
+        case "*":
+        if(!op){
+            populateDisplay(e.key);
+            op = e.key;
+        }
+        else if(op != "" && num2 != ""){
+            var result = operate(Number(num1),Number(num2),op);
+            displayContent.textContent = result;
+            num1 = result;
+            num2 = "";
+            populateDisplay(e.key);
+            op = e.key;
+        }
+        break;
+        
+
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+        populateDisplay(e.key);
+        storeValues(e.key);
+        break;
+
+        case ".":
+        if(!displayContent.textContent.includes(".")){
+            populateDisplay(target.textContent);
+            storeValues(target.textContent);
+        }
+        break;
+        
+        case "Enter": 
+        var result = operate(Number(num1),Number(num2),op);
+        // to check if a number is decimal or not
+        // divide it by 1 if it's remainder is not 0 then it is decimal
+        if(result%1 != 0){
+            displayContent.textContent = result.toFixed(1);
+        }
+        else{
+            displayContent.textContent = result;
+        }
+        num1 = result;
+        op = "";
+        num2 = "";
+        break;
+    }
+});
