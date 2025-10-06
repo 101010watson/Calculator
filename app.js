@@ -95,7 +95,7 @@ buttons.addEventListener("click",(e)=>{
         else if(op != "" && num2 != ""){
             var result = operate(Number(num1),Number(num2),op);
             displayContent.textContent = result;
-            num1 = result;
+            num1 = String(result);
             num2 = "";
             populateDisplay(target.textContent);
             op = target.textContent;
@@ -105,13 +105,13 @@ buttons.addEventListener("click",(e)=>{
             if(displayContent.textContent){
                 if(num1 && op && num2){
                     displayContent.textContent = displayContent.textContent.slice(0,num1.length+1);
-                    num2 = (num2/100);
+                    num2 = String((num2/100));
                     populateDisplay(num2);
                     
                 }
                 else if(num1 && op == "" && num2 == ""){
                     displayContent.textContent = "";
-                    num1 = (num1/100);
+                    num1 = String((num1/100));
                     populateDisplay(num1);
                     
                 }
@@ -134,7 +134,8 @@ buttons.addEventListener("click",(e)=>{
         break;
 
         case "dot":
-        if(!displayContent.textContent.includes(".")){
+        const currentNumber = op ? num2 : num1;
+        if(!currentNumber.includes(".")) {
             populateDisplay(target.textContent);
             storeValues(target.textContent);
         }
@@ -188,7 +189,7 @@ document.addEventListener("keydown",(e)=>{
         else if(op != "" && num2 != ""){
             var result = operate(Number(num1),Number(num2),op);
             displayContent.textContent = result;
-            num1 = result;
+            num1 = String(result);
             num2 = "";
             populateDisplay(e.key);
             op = e.key;
@@ -198,13 +199,13 @@ document.addEventListener("keydown",(e)=>{
             if(displayContent.textContent){
                 if(num1 && op && num2){
                     displayContent.textContent = displayContent.textContent.slice(0,num1.length+1);
-                    num2 = (num2/100);
+                    num2 = String((num2/100));
                     populateDisplay(num2);
                     
                 }
                 else if(num1 && op == "" && num2 == ""){
                     displayContent.textContent = "";
-                    num1 = (num1/100);
+                    num1 = String((num1/100));
                     populateDisplay(num1);
                     
                 }
@@ -227,7 +228,8 @@ document.addEventListener("keydown",(e)=>{
         break;
 
         case ".":
-        if(!displayContent.textContent.includes(".")){
+        const currentNumber = op ? num2 : num1;
+        if(!currentNumber.includes(".")) {
             populateDisplay(e.key);
             storeValues(e.key);
         }
