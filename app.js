@@ -150,7 +150,7 @@ buttons.addEventListener("click",(e)=>{
         else{
             displayContent.textContent = result;
         }
-        num1 = result;
+        num1 = String(result);
         op = "";
         num2 = "";
         break;
@@ -197,12 +197,16 @@ document.addEventListener("keydown",(e)=>{
         case "%":
             if(displayContent.textContent){
                 if(num1 && op && num2){
-                    populateDisplay(e.key);
-                    num2 = (num2/100).toFixed(2);
+                    displayContent.textContent = displayContent.textContent.slice(0,num1.length+1);
+                    num2 = (num2/100);
+                    populateDisplay(num2);
+                    
                 }
                 else if(num1 && op == "" && num2 == ""){
-                    populateDisplay(e.key);
-                    num1 = (num1/100).toFixed(2);
+                    displayContent.textContent = "";
+                    num1 = (num1/100);
+                    populateDisplay(num1);
+                    
                 }
             }
         break;
@@ -234,12 +238,12 @@ document.addEventListener("keydown",(e)=>{
         // to check if a number is decimal or not
         // divide it by 1 if it's remainder is not 0 then it is decimal
         if(result%1 != 0){
-            displayContent.textContent = result.toFixed(1);
+            displayContent.textContent = result.toFixed(2);
         }
         else{
             displayContent.textContent = result;
         }
-        num1 = result;
+        num1 = String(result);
         op = "";
         num2 = "";
         break;
