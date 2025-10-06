@@ -31,16 +31,27 @@ let num2= "";
 
 
 function populateDisplay(digit){
+    if(displayContent.textContent.length > 15){
+        displayContent.textContent = displayContent.textContent.slice(1);
+    }
     displayContent.textContent+=digit;
 }
 
 function storeValues(value){
     if(!op){
-        num1+=value;
+        if(num1.length < 15){
+            num1+=value;
+            return true;
+        }
     }
     else{
-        num2+=value;
+        if(num2.length < 15){
+            num2+=value;
+            return true;
+        } 
     }
+
+    return false; 
 }
 
 const displayContent = document.querySelector(".display");
@@ -92,7 +103,7 @@ buttons.addEventListener("click",(e)=>{
         break;
         case "percentage":
             if(displayContent.textContent){
-                if(num1 && op &&num2){
+                if(num1 && op && num2){
                     populateDisplay(target.textContent);
                     num2 = (num2/100).toFixed(2);
                 }
@@ -113,8 +124,9 @@ buttons.addEventListener("click",(e)=>{
         case "seven":
         case "eight":
         case "nine":
-        populateDisplay(target.textContent);
-        storeValues(target.textContent);
+            if(storeValues(target.textContent)){ // populate display only when it is stored this helps to cap the size limit to 15
+                populateDisplay(target.textContent); 
+            }
         break;
 
         case "dot":
@@ -190,8 +202,9 @@ document.addEventListener("keydown",(e)=>{
         case "7":
         case "8":
         case "9":
-        populateDisplay(e.key);
-        storeValues(e.key);
+        if(storeValues(e.key)){ // populate display only when it is stored this helps to cap the size limit to 15
+            populateDisplay(e.key);
+            }
         break;
 
         case ".":
