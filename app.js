@@ -104,12 +104,16 @@ buttons.addEventListener("click",(e)=>{
         case "percentage":
             if(displayContent.textContent){
                 if(num1 && op && num2){
-                    populateDisplay(target.textContent);
-                    num2 = (num2/100).toFixed(2);
+                    displayContent.textContent = displayContent.textContent.slice(0,num1.length+1);
+                    num2 = (num2/100);
+                    populateDisplay(num2);
+                    
                 }
                 else if(num1 && op == "" && num2 == ""){
-                    populateDisplay(target.textContent);
-                    num1 = (num1/100).toFixed(2);
+                    displayContent.textContent = "";
+                    num1 = (num1/100);
+                    populateDisplay(num1);
+                    
                 }
             }
         break;
@@ -190,7 +194,18 @@ document.addEventListener("keydown",(e)=>{
             op = e.key;
         }
         break;
-        
+        case "%":
+            if(displayContent.textContent){
+                if(num1 && op && num2){
+                    populateDisplay(e.key);
+                    num2 = (num2/100).toFixed(2);
+                }
+                else if(num1 && op == "" && num2 == ""){
+                    populateDisplay(e.key);
+                    num1 = (num1/100).toFixed(2);
+                }
+            }
+        break;
 
         case "0":
         case "1":
